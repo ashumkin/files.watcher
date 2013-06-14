@@ -98,7 +98,14 @@ echo $$ > "$lockfile"
 
 trap inter SIGINT SIGTERM
 
-find "${DIR}" -maxdepth ${MAX_DEPTH} \
+if test -d "${DIR}"
+then
+	cd "${DIR}"
+else
+	echo Directory \`${DIR}\` does not exist >&2
+	exit 1
+fi
+find . -maxdepth ${MAX_DEPTH} \
 	-type f -iname "${MASK}" \
 	-and -not -iwholename '*/.*/' \
 	-and -not -name '.*' \
