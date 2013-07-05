@@ -32,10 +32,15 @@ class TimeParser(object):
 
     def __parse_time(self, value):
         m = re.search('(\d+:\d+:\d+)\s*-\s*(\d+:\d+:\d+)', value)
-        if m is None:
-            raise ValueError('`%s` is not a time range' % value)
-        self.time_s.string = m.group(1)
-        self.time_f.string = m.group(2)
+        if m is not None:
+            self.time_s.string = m.group(1)
+            self.time_f.string = m.group(2)
+        else:
+            m = re.search('(\d+:\d+:\d+)\s*-\s*(\d+)', value)
+            if m is None:
+                raise ValueError('`%s` is not a time range or start time and duration' % value)
+            self.time_s.string = m.group(1)
+            self.time_f.seconds = self.time_s.seconds + int(m.group(2))
 
     @property
     def __duration(self):

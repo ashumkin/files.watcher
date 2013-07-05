@@ -33,9 +33,13 @@ class TestTimeParser(unittest.TestCase):
         self.assertEqual('00:00:05-00:01:43', self.parser.time)
         self.parser.time = '0:0:6 -   2:0:48'
         self.assertEqual('00:00:06-02:00:48', self.parser.time)
+        self.parser.time = '0:0:6 -   25'
+        self.assertEqual('00:00:06-00:00:31', self.parser.time)
 
     def test_forffmpeg(self):
         self.assertEqual('-ss 00:00:05 -t 98', self.parser.forffmpeg())
+        self.parser.time = '0:0:6 -   25'
+        self.assertEqual('-ss 00:00:06 -t 25', self.parser.forffmpeg())
 
     def test_incorrect_time(self):
         with self.assertRaises(ValueError):
