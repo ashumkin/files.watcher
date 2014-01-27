@@ -49,13 +49,20 @@ fi
 declare -a TEMP_STREAMS
 FILES=$(< $FILE_JOIN)
 
+sameq='-qscale 1'
+# if old version (--help output contains "-sameq")
+if ffmpeg --help 2>/dev/null | grep --quiet -F -e -sameq
+then
+	sameq='-sameq'
+fi
+
 for file in ${FILES[@]}
 do
 	stream="${file}.ts"
 	TEMP_STREAMS[${#TEMP_STREAMS[@]}]="$stream"
 	if test ${steps[1]} -eq 1
 	then
-		ffmpeg -y -i "$file" -sameq -vcodec copy -acodec copy -vbsf h264_mp4toannexb -f $FORMAT $params1 "$stream"
+		ffmpeg -y -i "$file" $sameq -vcodec copy -acodec copy -vbsf h264_mp4toannexb -f $FORMAT $params1 "$stream"
 	fi
 done
 param=
@@ -66,7 +73,7 @@ do
 done
 if test ${steps[2]} -eq 1
 then
-	ffmpeg -y -f $FORMAT -i "concat:$param" -sameq -vcodec copy -acodec copy -absf aac_adtstoasc $params2 "$OUTPUT"
+	ffmpeg -y -f $FORMAT -i "concat:$param" $sameq -vcodec copy -acodec copy -absf aac_adtstoasc $params2 "$OUTPUT"
 fi
 if test $delete_temp -eq 1
 then
