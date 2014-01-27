@@ -51,4 +51,4 @@ then
 fi
 echo $FILE_TITLE
 
-screen -c $SCREEN_CONFIG -S $SCREEN_NAME -D -m $SCRIPT --email "$USER" --password "$PASSWORD" --title "$FILE_TITLE" --category "$CATEGORY" --unlisted "$FILE"
+screen -c "$SCREEN_CONFIG" -S $SCREEN_NAME -D -m $SCRIPT --email "$USER" --password "$PASSWORD" --title "$FILE_TITLE" --category "$CATEGORY" --unlisted "$FILE"
