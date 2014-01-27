@@ -39,9 +39,11 @@ SCREEN_CONFIG=$YOUTUBE_SCREEN_CONFIG
 if test $title_from_dir -eq 1
 then
 	FILE_TITLE=$(basename "$(dirname "$FILE")")
+	# if file is in current directory
 	if test "$FILE_TITLE" == "."
 	then
-		title_from_dir=0
+		# take current directory name
+		FILE_TITLE=$(basename "$(pwd)")
 	fi
 fi
 
