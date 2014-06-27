@@ -5,6 +5,7 @@ steps=(0 0 0)
 FILE_JOIN=".join"
 OUTPUT="OUTPUT.MOV"
 FORMAT="mpegts"
+DIR_TEMP=/tmp
 delete_temp=0
 while test -n "$1"
 do
@@ -34,6 +35,10 @@ do
 			steps[$1]=1
 			shift
 			;;
+		-t|--temp)
+			DIR_TEMP="$1"
+			shift
+			;;
 		*)
 			FILE_JOIN="$arg"
 			;;
@@ -58,7 +63,7 @@ fi
 
 for file in ${FILES[@]}
 do
-	stream="${file}.ts"
+	stream="$DIR_TEMP/${file}.ts"
 	TEMP_STREAMS[${#TEMP_STREAMS[@]}]="$stream"
 	if test ${steps[1]} -eq 1
 	then
